@@ -62,11 +62,11 @@ model_name = args['model_name']
 
 out_width = 1280
 out_height = 720
+
 #
-#Editing for video
+# --- For Video --- START
 #
 
-# For video
 if args['isvid']:
     total_fps = []
     fps = 0
@@ -87,14 +87,17 @@ if args['isvid']:
             img_out = img_out.astype('float32')
             request = predict_pb2.PredictRequest()
             request.model_spec.name = model_name
+
+            # Place the input node name HERE
             request.inputs["image"].CopyFrom(make_tensor_proto(img_out, shape=(img_out.shape)))
             result = stub.Predict(request, 10.0) # result includes a dictionary with all model outputs
+
+            # Place the output node name HERE
             output = make_ndarray(result.outputs["detection_out"])
             img_out = np.squeeze(img_out/255,axis = 0).transpose(1,2,0)
             #print(output.shape)
             for i in range(0, 200*batch_size-1):
                 detection = output[:,:,i,:]
-                #print(detection[0,0,2])
                 # each detection has shape 1,1,7 where last dimension represent:
                 # image_id - ID of the image in the batch
                 # label - predicted class ID
@@ -110,12 +113,7 @@ if args['isvid']:
                     
                     x_scale = out_width / args['width']
                     y_scale = out_height / args['height']
-                    # box coordinates are proportional to the image size
-                    #print("x_min", x_min)
-                    #print("y_min", y_min)
-                    #print("x_max", x_max)
-                    #print("y_max", y_max)
-                    #np.divide(x_scale, x_min, out=0)
+
                     
                     scaled_x_min = int(np.round(x_scale*x_min))
                     scaled_x_max = int(np.round(x_scale*x_max))
@@ -123,12 +121,10 @@ if args['isvid']:
                     scaled_y_max = int(np.round(y_scale*y_max))
    
 
-                    #img_out = cv2.rectangle(cv2.UMat(img_out),(x_min,y_min),(x_max,y_max),(0,0,0),1)
                     frame = cv2.rectangle(frame,(scaled_x_min,scaled_y_min),(scaled_x_max,scaled_y_max),(0,0,0),2)
                     frame = cv2.putText(frame, f'#{int(detection[0,0,1])} {round((detection[0,0,2]*100),1)}%',
                                        (scaled_x_min,scaled_y_min-5), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255,0,0), 1, cv2.LINE_AA)
                     
-                    #print((img_out*255).astype(int))
                     
             fps_2 += 1
             end_time = time.time()
@@ -141,13 +137,10 @@ if args['isvid']:
             frame = cv2.putText(frame, f'FPS = {fps}',
                                  (0,15), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255,0,0), 2, cv2.LINE_AA)
             
-            #frame = cv2.putText(frame, f'FPS = {round((1/(end_time.timestamp()-start_time.timestamp())),2)}',
-            # (0,15), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255,0,0), 2, cv2.LINE_AA)
-             
-            #img_out = cv2.resize(img_out,(1280,720))
+
             out.write(frame)
             cv2.imshow("frame",frame)
-            #fps.append(round((1/(end_time.timestamp()-start_time.timestamp())),2))
+
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 print(f"Average FPS: {round((sum(total_fps)/len(total_fps)),2)}")
                 break
@@ -159,7 +152,7 @@ if args['isvid']:
     out.release()
     exit()
 #
-#Editing for video
+# --- For Video --- END
 #
 
 files = os.listdir(args['input_images_dir'])
@@ -180,6 +173,8 @@ for x in range(0, imgs.shape[0] - batch_size + 1, batch_size):
     request.model_spec.name = model_name
     img = imgs[x:(x + batch_size)]
     print("\nRequest shape", img.shape)
+
+    # Place the name of input node HERE
     request.inputs["image"].CopyFrom(make_tensor_proto(img, shape=(img.shape)))
     start_time = datetime.datetime.now()
     result = stub.Predict(request, 10.0) # result includes a dictionary with all model outputs
@@ -187,6 +182,8 @@ for x in range(0, imgs.shape[0] - batch_size + 1, batch_size):
 
     duration = (end_time - start_time).total_seconds() * 1000
     processing_times = np.append(processing_times,np.array([int(duration)]))
+    
+    # Place the name of output node HERE
     output = make_ndarray(result.outputs["detection_out"])
     print("Response shape", output.shape)
     for y in range(0,img.shape[0]):  # iterate over responses from all images in the batch

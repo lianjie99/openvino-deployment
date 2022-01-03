@@ -191,7 +191,7 @@ If want to run with GPU change `-d` to `GPU` instead of CPU or use `MULTI:CPU,GP
 
 **_NOTE:_** The entire demos folder is required as there are several modules needed in the common folder<br />
 
-- The original demo code can be found in <br /> `/opt/intel/openvino_2021/inference_engine/demos/object_detection_demo/python<br />`
+- The original demo code can be found in <br /> `/opt/intel/openvino_2021/inference_engine/demos/object_detection_demo/python`
 
 - Refer the --help argument for specific parameters when doing conversion <br />
 
@@ -298,6 +298,8 @@ python3 classification_OVMS.py --input_images_dir ~/Desktop/LianJie-Build/evalua
 ```
 
 ### Object Detection
+
+**_NOTE:_** The `object_detection_OVMS.py` only applicable for SSD model <br>
 
 - Use `object_detection_OVMS.py` provided in the (OVMS folder) to run the object detection<br />
 
