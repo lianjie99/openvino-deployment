@@ -263,7 +263,7 @@ sudo docker run -d -v $(pwd)/models:/models/ -p 9000:9000 openvino/model_server:
 sudo docker run -d --rm -it  --device=/dev/dri --group-add=$(stat -c "%g" /dev/dri/render*) -u $(id -u):$(id -g) -v $(pwd)/models:/models/ -p 9002:9002 openvino/model_server:latest-gpu --model_path /models/model1 --model_name effnetb0-GPU --port 9002 --target_device GPU
 ```
 **_Note:_**
-In practice, we should be able to switch into GPU mode by changing the docker image into latest-gpu and target_device to GPU. However,there are certain reasons of Ubuntu version (20.04) in deploying GPU for OpenCL which is stated below:<br />
+In practice, we should be able to switch into GPU mode by changing the docker image into latest-gpu and target_device to GPU. However, there are certain reasons for Ubuntu version (20.04) in deploying GPU for OpenCL which is stated below:<br />
 https://github.com/openvinotoolkit/docker_ci/blob/master/configure_gpu_ubuntu20.md
 
 
