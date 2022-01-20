@@ -12,7 +12,7 @@ source bin/setupvars.sh
 ```
 Expected output if the environment is setup successfully
 
-![openvino2021_environment](/uploads/e7df4db793d2c32106497130a2990e40/openvino2021_environment.PNG)
+![openvino2021_environment](https://user-images.githubusercontent.com/75518710/150317857-d790902e-e35c-4b35-aa99-8dc20203381f.PNG)
 
 ### **This guide consists of three major parts:**<br />
 [**Setting up the model (IR format)**](#setting-up-the-model-ir-format)
@@ -275,9 +275,9 @@ https://github.com/openvinotoolkit/docker_ci/blob/master/configure_gpu_ubuntu20.
 Example of input layer name and output layer name:
 
 input:<br />
-![input_name](/uploads/3cd8777aab62aa656b9277e0a3ca7feb/input_name.PNG)<br />
+![input_name](https://user-images.githubusercontent.com/75518710/150317910-bb535a35-43c3-420c-a3a3-7bbcee429d6c.PNG)<br />
 output:<br />
-![output_name](/uploads/1d5a7bfc290c18cf6ebdeac5e0b10c17/output_name.PNG)<br />
+![output_name](https://user-images.githubusercontent.com/75518710/150317918-57df5d42-67ab-4808-925e-0777cee3af8e.PNG)<br />
 
 `input_name` = "input_1"<br />
 `output_name` = "StatefulPartitionedCall/model/dense_2/Softmax"<br />
